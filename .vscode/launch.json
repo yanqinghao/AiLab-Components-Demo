@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": [
+                // "components.docker.classification.db.lgb.LightGBMClf",
+                // "components.docker.regression.db.lgb.LightGBMRegression",
+                // "components.docker.classification.local.catbinary.catBoostCLFBinary",
+                // "components.docker.classification.local.catmuti.catBoostCLFMuti",
+                "components.docker.regression.db.cat.catBoostRegression",
+                // "components.docker.demo.Demo",
+                // tableclf,tableregression,tableclf2
+                "--inputTable", "tableregression",
+                "--outputTable", "table2",
+                "--dw-type", "mysql",
+                "--dw-mysql-database", "db",
+                "--dw-mysql-username", "root",
+                "--dw-mysql-password", "123456",
+                "--storage-type", "local",
+                "--storage_local_temp_store", "/home/yanqinghao/demotmp",
+                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/regression",
+                "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/catregression",
+            ]
+        }
+    ]
+}
