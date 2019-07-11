@@ -2,46 +2,12 @@
 from __future__ import absolute_import, print_function
 
 from suanpan.docker import DockerComponent as dc
-from suanpan.docker.arguments import (
-    Int,
-    String,
-    Csv,
-    Model,
-    Bool,
-    Float,
-    ListOfString,
-    Table,
-)
-import pandas as pd
-import os
+from suanpan.docker.arguments import Int, String, Csv, Bool, Float, ListOfString
 import lightgbm as lgb
-import joblib
-from suanpan.components import Result
+from arguments import SklearnModel
 
 
-class SklearnModel(Model):
-    FILETYPE = "model"
-
-    def format(self, context):
-        super(SklearnModel, self).format(context)
-        if self.filePath:
-            self.value = joblib.load(self.filePath)
-
-        return self.value
-
-    def save(self, context, result):
-        joblib.dump(result.value, self.filePath)
-
-        return super(SklearnModel, self).save(
-            context, Result.froms(value=self.filePath)
-        )
-
-
-@dc.input(
-    Table(
-        key="inputData", table="inputTable", partition="inputPartition", required=True
-    )
-)
+@dc.input(Csv(key="inputData", required=True))
 @dc.column(ListOfString(key="featureColumns", default=[]))
 @dc.column(String(key="labelColumn", default="MEDV"))
 @dc.param(Int(key="maxDepth", default=-1, help="Maximum tree depth for base learners"))
@@ -119,7 +85,7 @@ class SklearnModel(Model):
 )
 @dc.param(Bool(key="needTrain", default=True))
 @dc.output(SklearnModel(key="outputModel"))
-def LightGBMRegression(context):
+def SPLightGBMRegressor(context):
     # 从 Context 中获取相关数据
     args = context.args
     # 查看上一节点发送的 args.inputData 数据
@@ -129,7 +95,7 @@ def LightGBMRegression(context):
     featureColumns = args.featureColumns
     labelColumn = args.labelColumn
 
-    features = df[featureColumns].values if len(featureColumns) > 0 else df.values
+    features = df[featureColumns].values if len(featureColumns)>0 else df.values
     label = df[labelColumn].values
 
     maxDepth = args.maxDepth
@@ -176,4 +142,4 @@ def LightGBMRegression(context):
 
 
 if __name__ == "__main__":
-    LightGBMRegression()
+    SPLightGBMRegressor()

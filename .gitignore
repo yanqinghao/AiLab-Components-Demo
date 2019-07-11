@@ -118,3 +118,4 @@ logs
 rcs/
 *.model
 .vscode/settings.json
+catboost_info

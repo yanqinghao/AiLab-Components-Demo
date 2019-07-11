@@ -11,14 +11,14 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                // "components.docker.classification.db.lgb.LightGBMClf",
-                // "components.docker.regression.db.lgb.LightGBMRegression",
-                // "components.docker.classification.local.catbinary.catBoostCLFBinary",
-                // "components.docker.classification.local.catmuti.catBoostCLFMuti",
-                "components.docker.regression.db.cat.catBoostRegression",
+                "components.docker.classification.local.SPLightGBMClassifier.SPLightGBMClassifier",
+                // "components.docker.regression.local.SPLightGBMRegressor.SPLightGBMRegressor",
+                // "components.docker.classification.db.SPCatBoostBinaryClassifier.SPCatBoostBinaryClassifier",
+                // "components.docker.classification.db.SPCatBoostMultiClassifier.SPCatBoostMultiClassifier",
+                // "components.docker.regression.local.SPCatBoostRegressor.SPCatBoostRegressor",
                 // "components.docker.demo.Demo",
                 // tableclf,tableregression,tableclf2
-                "--inputTable", "tableregression",
+                "--inputTable", "tableclf",
                 "--outputTable", "table2",
                 "--dw-type", "mysql",
                 "--dw-mysql-database", "db",
@@ -26,8 +26,9 @@
                 "--dw-mysql-password", "123456",
                 "--storage-type", "local",
                 "--storage_local_temp_store", "/home/yanqinghao/demotmp",
-                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/regression",
-                "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/catregression",
+                //regression clf/binary clf/multi
+                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/clf/multi",
+                "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/lgbclf",
             ]
         }
     ]

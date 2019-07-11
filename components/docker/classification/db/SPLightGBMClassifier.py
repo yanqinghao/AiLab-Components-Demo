@@ -2,44 +2,18 @@
 from __future__ import absolute_import, print_function
 
 from suanpan.docker import DockerComponent as dc
-from suanpan.docker.arguments import (
-    Int,
-    String,
-    Csv,
-    Model,
-    Bool,
-    Float,
-    ListOfString,
-    Table,
-)
-import pandas as pd
-import os
+from suanpan.docker.arguments import Int, String, Bool, Float, ListOfString, Table
 import lightgbm as lgb
-import joblib
-from suanpan.components import Result
+from arguments import SklearnModel
 
 
-class SklearnModel(Model):
-    FILETYPE = "model"
-
-    def format(self, context):
-        super(SklearnModel, self).format(context)
-        if self.filePath:
-            self.value = joblib.load(self.filePath)
-
-        return self.value
-
-    def save(self, context, result):
-        joblib.dump(result.value, self.filePath)
-
-        return super(SklearnModel, self).save(
-            context, Result.froms(value=self.filePath)
-        )
-
-
-@dc.input(Csv(key="inputData", required=True))
-@dc.column(ListOfString(key="featureColumns", default=["a", "b", "c", "d"]))
-@dc.column(String(key="labelColumn", default="e"))
+@dc.input(
+    Table(
+        key="inputData", table="inputTable", partition="inputPartition", required=True
+    )
+)
+@dc.column(ListOfString(key="featureColumns", default=["f1","f2","f3","f4"]))
+@dc.column(String(key="labelColumn", default="label"))
 @dc.param(Int(key="maxDepth", default=-1, help="Maximum tree depth for base learners"))
 @dc.param(
     String(
@@ -115,7 +89,7 @@ class SklearnModel(Model):
 )
 @dc.param(Bool(key="needTrain", default=True))
 @dc.output(SklearnModel(key="outputModel"))
-def LightGBMClf(context):
+def SPLightGBMClassifier(context):
     # 从 Context 中获取相关数据
     args = context.args
     # 查看上一节点发送的 args.inputData 数据
@@ -172,4 +146,4 @@ def LightGBMClf(context):
 
 
 if __name__ == "__main__":
-    LightGBMClf()
+    SPLightGBMClassifier()

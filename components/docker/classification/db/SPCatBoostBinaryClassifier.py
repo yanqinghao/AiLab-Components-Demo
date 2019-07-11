@@ -2,45 +2,18 @@
 from __future__ import absolute_import, print_function
 
 from suanpan.docker import DockerComponent as dc
-from suanpan.docker.arguments import (
-    Int,
-    String,
-    Csv,
-    Model,
-    Bool,
-    Float,
-    ListOfString,
-    Table,
+from suanpan.docker.arguments import Int, String, Table, Bool, Float, ListOfString
+from catboost import CatBoostClassifier
+from arguments import SklearnModel
+
+
+@dc.input(
+    Table(
+        key="inputData", table="inputTable", partition="inputPartition", required=True
+    )
 )
-import pandas as pd
-import os
-from catboost import CatBoostRegressor
-import joblib
-from suanpan.components import Result
-
-
-class SklearnModel(Model):
-    FILETYPE = "model"
-
-    def format(self, context):
-        super(SklearnModel, self).format(context)
-        if self.filePath:
-            self.value = joblib.load(self.filePath)
-
-        return self.value
-
-    def save(self, context, result):
-        joblib.dump(result.value, self.filePath)
-
-        return super(SklearnModel, self).save(
-            context, Result.froms(value=self.filePath)
-        )
-
-
-# 定义输入
-@dc.input(Csv(key="inputData", required=True))
-@dc.column(ListOfString(key="featureColumns", default=[]))
-@dc.column(String(key="labelColumn", default="MEDV"))
+@dc.column(ListOfString(key="featureColumns", default=["f1","f2","f3","f4"]))
+@dc.column(String(key="labelColumn", default="label"))
 @dc.param(
     Int(
         key="iterations",
@@ -61,14 +34,16 @@ class SklearnModel(Model):
     Float(
         key="rsm",
         default=1,
-        help="Random subspace method. The percentage of features to use at each split selection, when features are selected over again at random.",
+        help="""Random subspace method. The percentage of features to use
+                at each split selection, when features are selected over 
+                again at random.""",
     )
 )
 @dc.param(
     String(
         key="lossFunction",
-        default="MAE",
-        help="The metric to use in training. MAE,MAPE,RMSE,Poisson",
+        default="Logloss",
+        help="The metric to use in training. Logloss,CrossEntropy",
     )
 )
 @dc.param(
@@ -104,15 +79,14 @@ class SklearnModel(Model):
 @dc.param(
     String(
         key="evalMetric",
-        default="MAE",
-        help="The metric used for overfitting detection and best model selection. MAE,MAPE,RMSE,Poisson,SMAPE,R2,MSLE,MedianAbsoluteError",
+        default="Logloss",
+        help="""The metric used for overfitting detection and best model
+                selection. Logloss,CrossEntropy,Precision,Recall,F1,Accuracy,HingeLoss""",
     )
 )
 @dc.param(Bool(key="needTrain", default=True))
-
-# 定义输出
 @dc.output(SklearnModel(key="outputModel"))
-def catBoostRegression(context):
+def SPCatBoostBinaryClassifier(context):
     # 从 Context 中获取相关数据
     args = context.args
     # 查看上一节点发送的 args.inputData1 数据
@@ -122,7 +96,7 @@ def catBoostRegression(context):
     featureColumns = args.featureColumns
     labelColumn = args.labelColumn
 
-    features = df[featureColumns].values if len(featureColumns) > 0 else df.values
+    features = df[featureColumns].values
     label = df[labelColumn].values
 
     iterations = args.iterations
@@ -139,7 +113,7 @@ def catBoostRegression(context):
     baggingTemperature = args.baggingTemperature
     metricPeriod = args.metricPeriod
 
-    catclf = CatBoostRegressor(
+    catclf = CatBoostClassifier(
         iterations=iterations,
         learning_rate=learningRate,
         depth=depth,
@@ -161,4 +135,4 @@ def catBoostRegression(context):
 
 
 if __name__ == "__main__":
-    catBoostRegression()
+    SPCatBoostBinaryClassifier()
