@@ -11,11 +11,12 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "components.docker.classification.local.SPLightGBMClassifier.SPLightGBMClassifier",
+                // "components.docker.classification.local.SPLightGBMClassifier.SPLightGBMClassifier",
                 // "components.docker.regression.local.SPLightGBMRegressor.SPLightGBMRegressor",
                 // "components.docker.classification.db.SPCatBoostBinaryClassifier.SPCatBoostBinaryClassifier",
                 // "components.docker.classification.db.SPCatBoostMultiClassifier.SPCatBoostMultiClassifier",
                 // "components.docker.regression.local.SPCatBoostRegressor.SPCatBoostRegressor",
+                "components.docker.SPPredict.SPPredict",
                 // "components.docker.demo.Demo",
                 // tableclf,tableregression,tableclf2
                 "--inputTable", "tableclf",
@@ -27,8 +28,10 @@
                 "--storage-type", "local",
                 "--storage_local_temp_store", "/home/yanqinghao/demotmp",
                 //regression clf/binary clf/multi
-                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/clf/multi",
-                "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/lgbclf",
+                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/regression",
+                "--inputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/catregression",
+                // "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/catregression",
+                "--outputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/data",
             ]
         }
     ]

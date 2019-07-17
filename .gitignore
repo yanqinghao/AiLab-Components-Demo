@@ -119,3 +119,4 @@ rcs/
 *.model
 .vscode/settings.json
 catboost_info
+dataset/output/data/data.csv
