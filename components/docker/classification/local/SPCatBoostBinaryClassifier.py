@@ -8,7 +8,7 @@ from arguments import SklearnModel
 
 
 @dc.input(Csv(key="inputData", required=True))
-@dc.column(ListOfString(key="featureColumns", default=["a","b","c","d"]))
+@dc.column(ListOfString(key="featureColumns", default=["a", "b", "c", "d"]))
 @dc.column(String(key="labelColumn", default="e"))
 @dc.param(
     Int(

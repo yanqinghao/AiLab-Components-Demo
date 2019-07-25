@@ -23,3 +23,4 @@ class SklearnModel(Model):
         return super(SklearnModel, self).save(
             context, Result.froms(value=self.filePath)
         )
+

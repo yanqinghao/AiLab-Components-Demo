@@ -1,3 +1,4 @@
 suanpan[docker]
 lightgbm==2.2.3
 catboost==0.15.2
+statsmodels==0.10.1
