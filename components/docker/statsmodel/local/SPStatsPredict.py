@@ -2,7 +2,7 @@
 from __future__ import absolute_import, print_function
 
 from suanpan.docker import DockerComponent as dc
-from suanpan.docker.arguments import Csv, String, Bool
+from suanpan.docker.arguments import Csv, String, Bool, ListOfString
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.ar_model import ARResultsWrapper
@@ -18,7 +18,7 @@ from arguments import SklearnModel
 
 @dc.input(Csv(key="inputData"))
 @dc.input(SklearnModel(key="inputModel"))
-@dc.column(String(key="featureColumns", default=["date"]))
+@dc.column(ListOfString(key="featureColumns", default=["date"]))
 @dc.column(String(key="predictColumn", default="prediction"))
 @dc.param(String(key="start", default="2000-11-30"))
 @dc.param(String(key="end", default="2001-05-31"))
