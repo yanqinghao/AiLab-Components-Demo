@@ -18,7 +18,7 @@ from arguments import SklearnModel
 
 @dc.input(Csv(key="inputData"))
 @dc.input(SklearnModel(key="inputModel"))
-@dc.column(ListOfString(key="featureColumns", default=["date"]))
+@dc.column(ListOfString(key="featureColumns", default=["a", "b", "c", "d"]))
 @dc.column(String(key="predictColumn", default="prediction"))
 @dc.param(String(key="start", default="2000-11-30"))
 @dc.param(String(key="end", default="2001-05-31"))

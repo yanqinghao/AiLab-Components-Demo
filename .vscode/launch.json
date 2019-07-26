@@ -46,9 +46,9 @@
                 "--storage-type", "local",
                 "--storage_local_temp_store", "/home/yanqinghao/demotmp",
                 //regression clf/binary clf/multi timeseries
-                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/timeseries",
-                "--inputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/timeseries",
-                // "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/timeseries",
+                "--inputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/input/clf/multi",
+                "--inputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/logitclf",
+                // "--outputModel", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/logitclf",
                 "--outputData", "/home/yanqinghao/code/AiLab-Components-Demo-1/dataset/output/data",
             ]
         }
