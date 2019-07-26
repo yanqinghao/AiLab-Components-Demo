@@ -54,7 +54,7 @@ from arguments import SklearnModel
     )
 )
 @dc.param(
-    Int(
+    Bool(
         key="mleRegression",
         default=True,
         help="Whether or not to use estimate the regression coefficients for the"
