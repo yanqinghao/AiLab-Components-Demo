@@ -5,7 +5,6 @@ from suanpan.docker import DockerComponent as dc
 from suanpan.docker.arguments import Csv, String, Bool
 import pandas as pd
 import numpy as np
-from statsmodels.tsa.base.tsa_model import TimeSeriesResultsWrapper
 from statsmodels.tsa.ar_model import ARResultsWrapper
 from statsmodels.tsa.statespace.sarimax import SARIMAXResultsWrapper
 from statsmodels.tsa.arima_model import ARMAResultsWrapper, ARIMAResultsWrapper
@@ -19,7 +18,7 @@ from arguments import SklearnModel
 
 @dc.input(Csv(key="inputData"))
 @dc.input(SklearnModel(key="inputModel"))
-@dc.column(String(key="featureColumns", default=["a", "b", "c", "d"]))
+@dc.column(String(key="featureColumns", default=["date"]))
 @dc.column(String(key="predictColumn", default="prediction"))
 @dc.param(String(key="start", default="2000-11-30"))
 @dc.param(String(key="end", default="2001-05-31"))
@@ -39,12 +38,16 @@ def SPStatsPredict(context):
         ),
     ):
         print("Time series model loaded")
+        df = args.inputData
         start = args.start
         end = args.end
         dynamic = args.dynamic
+        dateCol = args.featureColumns[0]
         predictions = model.predict(start, end, dynamic=dynamic)
         res = pd.DataFrame(predictions.values, columns=[args.predictColumn])
-        res["date"] = predictions.index
+        res[dateCol] = predictions.index
+        df[dateCol] = pd.to_datetime(df[dateCol])
+        res = pd.merge(df, res, on=dateCol, how="outer")
         print(res)
     elif isinstance(model, RegressionResultsWrapper):
         print("Linear regression model loaded")
