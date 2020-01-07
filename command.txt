@@ -4,3 +4,5 @@ docker build -t registry.cn-shanghai.aliyuncs.com/shuzhi/lightgbm-docker:latest 
 docker login --username=suanpan-dev@xuelangyun registry.cn-shanghai.aliyuncs.com
 xlszWork2018!
 docker push registry.cn-shanghai.aliyuncs.com/shuzhi/lightgbm-docker:latest
+docker build -t registry.cn-shanghai.aliyuncs.com/shuzhi/mllib_components:3 -f docker/docker_yanqing/Dockerfile .
+docker push registry.cn-shanghai.aliyuncs.com/shuzhi/mllib_components:3

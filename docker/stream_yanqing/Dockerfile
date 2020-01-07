@@ -1,6 +1,8 @@
-ARG PYTHON_VERSION=3.6
+ARG PYTHON_VERSION=3.7
 
-FROM registry-vpc.cn-shanghai.aliyuncs.com/shuzhi/horovod_docker_base:${PYTHON_VERSION} as builder
+ARG NAME_SPACE
+
+FROM registry-vpc.cn-shanghai.aliyuncs.com/${NAME_SPACE}/stream_base:${PYTHON_VERSION} as builder
 
 ENV PYPI_MIRROR "https://mirrors.aliyun.com/pypi/simple"
 
@@ -16,9 +18,9 @@ COPY . /build
 
 RUN bash tools/compress.sh
 
-FROM registry-vpc.cn-shanghai.aliyuncs.com/shuzhi/horovod_docker_base:${PYTHON_VERSION}
+FROM registry-vpc.cn-shanghai.aliyuncs.com/${NAME_SPACE}/stream_base:${PYTHON_VERSION}
 
-WORKDIR /demos
+WORKDIR /yanqing
 
 ENV PYPI_MIRROR "https://mirrors.aliyun.com/pypi/simple"
 
@@ -26,7 +28,7 @@ RUN pip config set global.index-url ${PYPI_MIRROR}
 
 RUN pip install --upgrade pip
 
-COPY --from=builder /build/dist /demos
+COPY --from=builder /build /yanqing
 
 RUN pip install -r requirements.txt
 
